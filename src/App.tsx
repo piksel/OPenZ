@@ -233,8 +233,8 @@ const PlayMain = (props: { channels: ChannelState[], notes: NoteSet }) => {
 
 
   return (
-    <div style={{height: '14rem'}}>
-      <Flex stretch row style={{padding: '2rem', flexWrap: 'wrap'}}>
+    <>
+      <Flex stretch row style={{padding: '2rem', flexWrap: 'wrap', height: '14rem'}}>
         {channels.map((channel, i) => (<>
           <Flex row style={{
             width: '12.5%',
@@ -248,7 +248,7 @@ const PlayMain = (props: { channels: ChannelState[], notes: NoteSet }) => {
         <Keyboard notes={notes} onKeyClicked={() => {
         }}/>
       </div>
-    </div>)
+    </>)
 }
 
 const JamMain = (props: { channel: number, notes: NoteSet, wheels: WheelInfo[], keyClicked: any }) => {
@@ -257,15 +257,15 @@ const JamMain = (props: { channel: number, notes: NoteSet, wheels: WheelInfo[], 
 
   const {notes, wheels, keyClicked} = props;
   return (
-    <div style={{height: '14rem'}}>
-      <Flex stretch row style={{padding: '2rem'}}>
+    <>
+      <Flex stretch row style={{padding: '2rem', height: '14rem'}}>
         <Wheels wheels={wheels}/>
       </Flex>
       <div style={{padding: '2rem'}}>
 
         <Keyboard notes={notes} onKeyClicked={keyClicked}/>
       </div>
-    </div>
+    </>
   )
 }
 

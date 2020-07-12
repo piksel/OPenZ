@@ -26,9 +26,9 @@ const adsrPage = ['Attack', 'Decay', 'Sustain', 'Release'];
 const lfoPage = ['LFO Amount', 'LFO Speed', 'LFO Target', 'LFO Shape'];
 const fxPage = ['FX1 Send', 'FX2 Send', 'Pan', 'Level'];
 const arpPage = ['Arp. Speed', 'Arp. Pattern', 'Arp. Style', 'Arp. Range'];
-const tapePage = ['speed', 'fine tune', 'filter', 'resonance'];
-const mastPage = ['chorus', 'drive', 'filter', 'resonance'];
-const lightPage = ['color', 'alt color', 'speed', 'intensity'];
+const tapePage = ['Speed', 'Fine Tune', 'Filter', 'Resonance'];
+const mastPage = ['Chorus', 'Drive', 'Filter', 'Resonance'];
+const lightPage = ['Color', 'Alt Color', 'Speed', 'Intensity'];
 
 const percParams = [percPage, adsrPage, lfoPage, fxPage];
 const synthParams = [instPage, adsrPage, lfoPage, fxPage];
