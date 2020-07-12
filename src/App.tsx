@@ -19,7 +19,6 @@ const App = () => {
   const [channel, setChannel] = useState<number>(0);
 
   const [notes, setNotes] = useState<NoteSet>(Array.from(new Array(24), _ => ({pressed: false, instrument: 0})));
-  const [noteOffset, setNoteOffset] = useState<number>(0);
 
   const [wheels, setWheels] = useState<{ value?: number, channel: number, page: number }[]>(Array.from(new Array(4), _ => ({
     channel: 0,
