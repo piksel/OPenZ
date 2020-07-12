@@ -1,15 +1,17 @@
-import {Flex} from "../components/Flex";
+import {Flex} from "../components";
 import React from "react";
 
 export const NumberBox = (props: { value: number | string, label: string, color?: string }) => {
   const {value, label, color} = props;
   return (
-    <Flex col style={{}}>
+    <Flex col style={{height: '5rem',}}>
       <div style={{
         textAlign: 'right', fontSize: '4rem', fontWeight: 300,
-        lineHeight: '4rem',
+        lineHeight: '1em',
+        height: '1em',
         marginTop: '-.5rem',
         width: '8rem',
+
       }}>{value}</div>
       <Flex row style={{
         alignItems: 'center',

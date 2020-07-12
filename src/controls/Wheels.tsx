@@ -3,22 +3,20 @@ import {CommonProps, withCommon} from "../components/common";
 import {controlLabels} from "../models/controlLabels";
 import React from "react";
 import {NumberBox} from "./NumberBox";
+import {BigText, Flex} from "../components";
+import {Stretcher} from "../components/Stretcher";
 
 export const Wheels = (props: { wheels: { value?: number, channel: number, page: number }[] }) => {
   const {wheels} = props;
 
-  return (<div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-    <div style={{
-      fontSize: '4rem',
-      width: '10rem',
-      textAlign: 'center',
-      fontWeight: 300,
-    }}>{controlLabels[wheels[0].channel]?.group}</div>
+  return (<Flex row fill>
+    <BigText>{controlLabels[wheels[0].channel]?.group}</BigText>
+    <Stretcher/>
     {wheels.map(({value, channel, page}, index) =>
 
       <Wheel key={index} index={index} value={value} channel={channel} page={page}/>
     )}
-  </div>)
+  </Flex>)
 }
 
 const WheelBackground = styled.div<CommonProps>`

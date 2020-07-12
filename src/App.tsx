@@ -2,12 +2,14 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import {IMidiContext, MidiProvider} from './contexts/MidiContext';
 import webmidi, {IEventController, IEventNote, Input, InputEvents, Output} from "webmidi";
-import {Button, Flex, Select} from "./components";
+import {BigText, Button, Flex, Select} from "./components";
 import styled, {ThemeProvider} from "styled-components/macro";
 import {DefaultDarkTheme} from "./themes";
 import {NoteSet} from "./models";
 import {Keyboard, NumberBox, Wheels} from "./controls";
 import {MidiBeatMessageType} from "./models/midiConstants";
+import {ChannelState, ProjectInfo, WheelInfo} from "./models/stateModels";
+import {ChannelBox} from "./controls/ChannelBox";
 
 const fmtBytes = (bytes: Uint8Array) => Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
 
@@ -17,10 +19,12 @@ const App = () => {
   const [output, setOutput] = useState<Output | null>();
 
   const [channel, setChannel] = useState<number>(0);
+  const [channels, setChannels] = useState<ChannelState[]>(Array.from(new Array(16), _ => ({playing: false})));
+  const [project, setProject] = useState<ProjectInfo>({});
 
   const [notes, setNotes] = useState<NoteSet>(Array.from(new Array(24), _ => ({pressed: false, instrument: 0})));
 
-  const [wheels, setWheels] = useState<{ value?: number, channel: number, page: number }[]>(Array.from(new Array(4), _ => ({
+  const [wheels, setWheels] = useState<WheelInfo[]>(Array.from(new Array(4), _ => ({
     channel: 0,
     page: 0
   })))
@@ -30,12 +34,13 @@ const App = () => {
 
   const updateNote = (note: IEventNote, channel: number, pressed: boolean) => {
     const modNote = (note.number - 5) % 24;
-    const shiftNote = modNote;
     //setNoteOffset(note.number - shiftNote);
+
+    setChannels(cs => cs.map((c, i) => i === channel - 1 ? {playing: pressed, note: modNote} : c));
 
     setChannel(channel);
     setNotes(ps => {
-      return ps.map((v, i) => i === shiftNote ? {
+      return ps.map((v, i) => i === modNote ? {
         pressed,
         instrument: channel,
       } : v);
@@ -59,14 +64,11 @@ const App = () => {
   const updateClock = (messageType: MidiBeatMessageType, timestamp: number) => {
 
     if (messageType === MidiBeatMessageType.Clock) {
-
-      //bpm: Math.round((timestamp - c.lastBeat) * .12),
-
       // 1200 = 100bpm
       //  600 = 200bpm
 
       setClock(c => {
-        if (c.pulses == 47) {
+        if (c.pulses === 47) { // 1/4 == 24 pulses, so 48 pulses == 2/4
           setTempo(t => ({...t, bpm: Math.round(120000 / (timestamp - c.lastBeat))}))
           return {
             lastBeat: timestamp,
@@ -105,29 +107,28 @@ const App = () => {
     const logEvent = (e: InputEvents[keyof InputEvents]) => {
       console.log(e.type, fmtBytes(e.data));
     }
-    input?.addListener("controlchange", undefined, (e) => updateWheel(e.controller, e.channel, e.value));
-    input?.addListener("noteon", undefined, (e) => updateNote(e.note, e.channel, true));
-    input?.addListener("noteoff", undefined, (e) => updateNote(e.note, e.channel, false));
-    input?.addListener("clock", undefined, e => updateClock(e.data[0], e.timestamp));
-    input?.addListener("channelmode", undefined, logEvent);
-    input?.addListener("activesensing", undefined, logEvent);
-    input?.addListener("songposition", undefined, logEvent);
-    input?.addListener("sysex", undefined, logEvent);
-    input?.addListener("unknownsystemmessage", undefined, logEvent);
-    input?.addListener("tuningrequest", undefined, logEvent);
-    input?.addListener("programchange", undefined, logEvent);
-    input?.addListener("reset", undefined, logEvent);
-    input?.addListener("start", undefined, logEvent);
-    input?.addListener("stop", undefined, logEvent);
+    input?.removeListener();
+
+    input?.addListener("controlchange", "all", (e) => updateWheel(e.controller, e.channel, e.value));
+    input?.addListener("noteon", "all", (e) => updateNote(e.note, e.channel, true));
+    input?.addListener("noteoff", "all", (e) => updateNote(e.note, e.channel, false));
+    input?.addListener("clock", "all", e => updateClock(e.data[0], e.timestamp));
+    input?.addListener("channelmode", "all", logEvent);
+    input?.addListener("activesensing", "all", logEvent);
+    input?.addListener("songposition", "all", logEvent);
+    input?.addListener("sysex", "all", logEvent);
+    input?.addListener("unknownsystemmessage", "all", logEvent);
+    input?.addListener("tuningrequest", "all", logEvent);
+    input?.addListener("programchange", "all", e => setProject(p => ({...p, number: e.channel, pattern: e.value})));
+    input?.addListener("reset", "all", logEvent);
+    input?.addListener("start", "all", () => setProject(p => ({...p, playing: true})));
+    input?.addListener("stop", "all", () => setProject(p => ({...p, playing: false})));
 
     //input?.addListener("midimessage", undefined, logEvent);
   }, [input]);
 
   useEffect(() => {
     (window as any).opzo = output;
-    const logEvent = (e: InputEvents[keyof InputEvents]) => {
-      console.log(e.type, fmtBytes(e.data));
-    }
 
     //output?.sendControlChange(102, 1, 0);
 
@@ -157,25 +158,16 @@ const App = () => {
 
     //console.log(`Playing ${key}${octave} on channel ${channel || 1}`);
 
-
-    output?.playNote(`${key}${octave}`, channel || 1, {
-      velocity: down ? .5 : 0,
-    });
+    try {
+      output?.playNote(`${key}${octave}`, channel || 1, {
+        velocity: down ? .5 : 0,
+      });
+    } catch (e) {
+      console.error('Failed to play note ')
+    }
   }
 
-  const channelNames = [
-    'None',
-    'Kick',
-    'Snare',
-    'Hihat',
-    'Percussion',
-    'Bass',
-    'Lead',
-    'Arp',
-    'Chord',
-    'Fx 1',
-    'Fx 2',
-  ]
+
 
   return (
     <ThemeProvider theme={DefaultDarkTheme}>
@@ -209,16 +201,22 @@ const App = () => {
             </HeadRight>
           </AppHeader>
           <AppMain>
+            <Flex row style={{padding: '2rem', alignItems: 'center', justifyContent: 'space-between'}}>
+              <Flex row style={{cursor: 'pointer'}} onClick={() => setProject(p => ({...p, playing: !p.playing}))}>
+                <BigText disabled={project.playing}>{'JAM'}</BigText>
+                <BigText style={{width: '2rem'}}>/</BigText>
+                <BigText disabled={!project.playing}>{'PLY'}</BigText>
+              </Flex>
+              <Flex row>
+                <NumberBox value={project.number?.toString()?.padStart(2, '0') ?? 'XX'} label='PROJECT'/>
+                <NumberBox value={project.pattern?.toString()?.padStart(2, '0') ?? 'XX'} label='PATTERN'/>
 
-            <Flex row style={{padding: '2rem'}}>
-              <Wheels wheels={wheels}/>
-              <NumberBox value={tempo.bpm.toFixed(0)} label='BPM'/>
+                <NumberBox value={tempo.bpm.toFixed(0)} label='BPM'/>
+              </Flex>
             </Flex>
-            <div style={{padding: '2rem'}}>
-              Instrument: {channelNames.length > channel ? channelNames[channel] : `Unknown (${channel})`}
+            {project.playing ? <PlayMain {...{channels, notes}} /> :
+              <JamMain {...{channel, notes, wheels, keyClicked}} />}
 
-              <Keyboard notes={notes} onKeyClicked={keyClicked}/>
-            </div>
           </AppMain>
         </AppRoot>
       </MidiProvider>
@@ -226,12 +224,49 @@ const App = () => {
   );
 }
 
-const MidiInput = (props: Input) => {
-  const {connection, id, name} = props;
-  return (<>
-    {name} ({id}): {connection}
+/*
+const channelNames = ['None', 'Kick', 'Snare', 'Percussion', 'Sample', 'Bass', 'Lead', 'Arp', 'Chord',
+  'Fx 1', 'Fx 2', 'Tape', 'Master', 'Perform', 'Module', 'Lights', 'Motion'];
+ */
+const PlayMain = (props: { channels: ChannelState[], notes: NoteSet }) => {
+  const {channels, notes} = props;
 
-  </>)
+
+  return (
+    <div style={{height: '14rem'}}>
+      <Flex stretch row style={{padding: '2rem', flexWrap: 'wrap'}}>
+        {channels.map((channel, i) => (<>
+          <Flex row style={{
+            width: '12.5%',
+            justifyContent: 'center',
+          }}>
+            <ChannelBox state={channel} number={i}/>
+          </Flex>
+        </>))}
+      </Flex>
+      <div style={{padding: '2rem'}}>
+        <Keyboard notes={notes} onKeyClicked={() => {
+        }}/>
+      </div>
+    </div>)
+}
+
+const JamMain = (props: { channel: number, notes: NoteSet, wheels: WheelInfo[], keyClicked: any }) => {
+
+  //{{ /* Instrument: {channelNames.length > channel ? channelNames[channel] : `Unknown (${channel})`} */}}
+
+  const {notes, wheels, keyClicked} = props;
+  return (
+    <div style={{height: '14rem'}}>
+      <Flex stretch row style={{padding: '2rem'}}>
+        <Wheels wheels={wheels}/>
+      </Flex>
+      <div style={{padding: '2rem'}}>
+
+        <Keyboard notes={notes} onKeyClicked={keyClicked}/>
+      </div>
+    </div>
+  )
 }
 
 const HeadLeft = styled.div`
@@ -263,7 +298,7 @@ justify-content: space-between;
 const AppMain = styled.div`
 display: flex;
 flex-direction: column;
-align-items: center;
+align-items: stretch;
 justify-content: flex-start;
 flex: 1;
 `;

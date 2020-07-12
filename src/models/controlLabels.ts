@@ -26,26 +26,32 @@ const adsrPage = ['Attack', 'Decay', 'Sustain', 'Release'];
 const lfoPage = ['LFO Amount', 'LFO Speed', 'LFO Target', 'LFO Shape'];
 const fxPage = ['FX1 Send', 'FX2 Send', 'Pan', 'Level'];
 const arpPage = ['Arp. Speed', 'Arp. Pattern', 'Arp. Style', 'Arp. Range'];
+const tapePage = ['speed', 'fine tune', 'filter', 'resonance'];
+const mastPage = ['chorus', 'drive', 'filter', 'resonance'];
+const lightPage = ['color', 'alt color', 'speed', 'intensity'];
 
-
-const rhythmParams = [percPage, adsrPage, lfoPage, fxPage];
-
-const melodyParams = [instPage, adsrPage, lfoPage, fxPage];
-
+const percParams = [percPage, adsrPage, lfoPage, fxPage];
+const synthParams = [instPage, adsrPage, lfoPage, fxPage];
 const arpegParams = [instPage, adsrPage, arpPage, fxPage];
-
 const fxParams = [instPage, lfoPage];
+const numbParams = Array.from(Array(4), (_, x) => Array.from(Array(4), (_, y) => (x * 4 + y).toString(10).padStart(2, '0')))
 
-export const controlLabels: { [key: number]: ControlLabel } = {
-  [0]: {group: '', params: [['---', '---', '---', '---']]},
-  [0x01]: {group: 'KCK', params: rhythmParams},
-  [0x02]: {group: 'SNR', params: rhythmParams},
-  [0x03]: {group: 'HIH', params: rhythmParams},
-  [0x04]: {group: 'PCS', params: rhythmParams},
-  [0x05]: {group: 'BAS', params: melodyParams},
-  [0x06]: {group: 'LEA', params: melodyParams},
-  [0x07]: {group: 'ARP', params: arpegParams},
-  [0x08]: {group: 'CHO', params: melodyParams},
-  [0x09]: {group: 'FX1', params: fxParams},
-  [0x0a]: {group: 'FX2', params: fxParams},
-}
+export const controlLabels: ControlLabel[] = [
+  {group: '', params: [['---', '---', '---', '---']]},
+  {group: 'KCK', params: percParams},
+  {group: 'SNR', params: percParams},
+  {group: 'PCS', params: percParams},
+  {group: 'SMP', params: percParams},
+  {group: 'BAS', params: synthParams},
+  {group: 'LEA', params: synthParams},
+  {group: 'ARP', params: arpegParams},
+  {group: 'CHO', params: synthParams},
+  {group: 'FX1', params: fxParams},
+  {group: 'FX2', params: fxParams},
+  {group: 'TAP', params: [tapePage, fxPage]},
+  {group: 'MAS', params: [mastPage]},
+  {group: 'PRF', params: [[]]},
+  {group: 'MOD', params: numbParams},
+  {group: 'LGT', params: [lightPage, numbParams[1]]},
+  {group: 'MTN', params: [[]]},
+];

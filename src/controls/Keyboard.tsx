@@ -1,6 +1,7 @@
 import styled, {css} from "styled-components/macro";
 import {NoteSet} from "../models";
 import React from "react";
+import {noteNames} from "../models/midiConstants";
 
 const NoteKey = styled.div<{ pressed: boolean, black: boolean, noteColor: number }>`
   user-select: none;
@@ -36,20 +37,7 @@ const NoteKey = styled.div<{ pressed: boolean, black: boolean, noteColor: number
   ${p => p.pressed && css`box-shadow: 0 0 .1rem #ff518c`}
 `
 
-const noteNames = [
-  'F',
-  'F#',
-  'G',
-  'G#',
-  'A',
-  'A#',
-  'B',
-  'C',
-  'C#',
-  'D',
-  'D#',
-  'E',
-]
+
 
 export const Keyboard = (props: { notes: NoteSet, onKeyClicked: (key: string, octave: number, down: boolean) => void }) => {
   const {notes, onKeyClicked} = props;
@@ -58,10 +46,11 @@ export const Keyboard = (props: { notes: NoteSet, onKeyClicked: (key: string, oc
     {notes.map(({pressed, instrument}, index) => {
         const octIndex = index % 12;
         const octave = index > 18 ? 5 : index > 6 ? 4 : 3;
-        const noteName = noteNames[octIndex];
+        const noteName = noteNames[index];
+        const cleanNote = noteName.replace('♯', '#').replace('♭', 'b');
         const black = [1, 3, 5, 8, 10].includes(octIndex);
-        const keyOn = () => onKeyClicked(noteName, octave, true);
-        const keyOff = () => onKeyClicked(noteName, octave, false);
+        const keyOn = () => onKeyClicked(cleanNote, octave, true);
+        const keyOff = () => onKeyClicked(cleanNote, octave, false);
 
         return <NoteKey pressed={pressed} black={black} onMouseDown={keyOn} onMouseUp={keyOff} onMouseLeave={keyOff}
                         noteColor={instrument * 45}
