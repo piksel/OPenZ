@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/OPenZ/static/css/main.f084d9cd.chunk.css",
-    "main.js": "/OPenZ/static/js/main.a25b609b.chunk.js",
-    "main.js.map": "/OPenZ/static/js/main.a25b609b.chunk.js.map",
+    "main.js": "/OPenZ/static/js/main.d8e924fe.chunk.js",
+    "main.js.map": "/OPenZ/static/js/main.d8e924fe.chunk.js.map",
     "runtime-main.js": "/OPenZ/static/js/runtime-main.5b36b990.js",
     "runtime-main.js.map": "/OPenZ/static/js/runtime-main.5b36b990.js.map",
     "static/js/2.5912a212.chunk.js": "/OPenZ/static/js/2.5912a212.chunk.js",
     "static/js/2.5912a212.chunk.js.map": "/OPenZ/static/js/2.5912a212.chunk.js.map",
     "index.html": "/OPenZ/index.html",
-    "precache-manifest.05014509c2968d50341b4bc13c2f23ce.js": "/OPenZ/precache-manifest.05014509c2968d50341b4bc13c2f23ce.js",
+    "precache-manifest.ded4582079ed07acbe23a1bc750a4efa.js": "/OPenZ/precache-manifest.ded4582079ed07acbe23a1bc750a4efa.js",
     "service-worker.js": "/OPenZ/service-worker.js",
     "static/css/main.f084d9cd.chunk.css.map": "/OPenZ/static/css/main.f084d9cd.chunk.css.map",
     "static/js/2.5912a212.chunk.js.LICENSE.txt": "/OPenZ/static/js/2.5912a212.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.5b36b990.js",
     "static/js/2.5912a212.chunk.js",
     "static/css/main.f084d9cd.chunk.css",
-    "static/js/main.a25b609b.chunk.js"
+    "static/js/main.d8e924fe.chunk.js"
   ]
 }

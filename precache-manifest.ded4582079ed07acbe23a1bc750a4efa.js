@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "0b05812177833034af976a7215265e22",
+    "revision": "2bd34f0656f993fc474cc8a460b3fa75",
     "url": "/OPenZ/index.html"
   },
   {
-    "revision": "fba8b312a1e749d721bf",
+    "revision": "940723ea911cf8079560",
     "url": "/OPenZ/static/css/main.f084d9cd.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/OPenZ/static/js/2.5912a212.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "fba8b312a1e749d721bf",
-    "url": "/OPenZ/static/js/main.a25b609b.chunk.js"
+    "revision": "940723ea911cf8079560",
+    "url": "/OPenZ/static/js/main.d8e924fe.chunk.js"
   },
   {
     "revision": "fc7839b0ccfbace46fea",
