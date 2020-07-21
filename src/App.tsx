@@ -214,9 +214,10 @@ const App = () => {
                 <NumberBox value={tempo.bpm.toFixed(0)} label='BPM'/>
               </Flex>
             </Flex>
-            {project.playing ? <PlayMain {...{channels, notes}} /> :
-              <JamMain {...{channel, notes, wheels, keyClicked}} />}
-
+            {project.playing
+              ? <PlayMain {...{channels, notes}} />
+              : <JamMain {...{channel, notes, wheels, keyClicked}} />
+            }
           </AppMain>
         </AppRoot>
       </MidiProvider>
