@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/OPenZ/static/css/main.f084d9cd.chunk.css",
-    "main.js": "/OPenZ/static/js/main.d8e924fe.chunk.js",
-    "main.js.map": "/OPenZ/static/js/main.d8e924fe.chunk.js.map",
-    "runtime-main.js": "/OPenZ/static/js/runtime-main.5b36b990.js",
-    "runtime-main.js.map": "/OPenZ/static/js/runtime-main.5b36b990.js.map",
-    "static/js/2.5912a212.chunk.js": "/OPenZ/static/js/2.5912a212.chunk.js",
-    "static/js/2.5912a212.chunk.js.map": "/OPenZ/static/js/2.5912a212.chunk.js.map",
+    "main.js": "/OPenZ/static/js/main.69367153.chunk.js",
+    "main.js.map": "/OPenZ/static/js/main.69367153.chunk.js.map",
+    "runtime-main.js": "/OPenZ/static/js/runtime-main.dc736fbd.js",
+    "runtime-main.js.map": "/OPenZ/static/js/runtime-main.dc736fbd.js.map",
+    "static/js/2.780b91a7.chunk.js": "/OPenZ/static/js/2.780b91a7.chunk.js",
+    "static/js/2.780b91a7.chunk.js.map": "/OPenZ/static/js/2.780b91a7.chunk.js.map",
     "index.html": "/OPenZ/index.html",
-    "precache-manifest.ded4582079ed07acbe23a1bc750a4efa.js": "/OPenZ/precache-manifest.ded4582079ed07acbe23a1bc750a4efa.js",
+    "precache-manifest.85dc1cedcfa3979377179669ae3b43b9.js": "/OPenZ/precache-manifest.85dc1cedcfa3979377179669ae3b43b9.js",
     "service-worker.js": "/OPenZ/service-worker.js",
     "static/css/main.f084d9cd.chunk.css.map": "/OPenZ/static/css/main.f084d9cd.chunk.css.map",
-    "static/js/2.5912a212.chunk.js.LICENSE.txt": "/OPenZ/static/js/2.5912a212.chunk.js.LICENSE.txt"
+    "static/js/2.780b91a7.chunk.js.LICENSE.txt": "/OPenZ/static/js/2.780b91a7.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.5b36b990.js",
-    "static/js/2.5912a212.chunk.js",
+    "static/js/runtime-main.dc736fbd.js",
+    "static/js/2.780b91a7.chunk.js",
     "static/css/main.f084d9cd.chunk.css",
-    "static/js/main.d8e924fe.chunk.js"
+    "static/js/main.69367153.chunk.js"
   ]
 }
